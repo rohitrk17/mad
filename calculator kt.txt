@@ -1,0 +1,160 @@
+import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
+import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.Exception
+import java.lang.StringBuilder
+
+class MainActivity : AppCompatActivity() {
+    var digit = StringBuilder()
+    var operation:Char=' '
+    var lhs : Double =0.0
+    var rhs : Double =0.0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        displayRes.text = ""
+        buttonStart()
+    }
+    private fun buttonStart(){
+        numberButton()
+        operationButton()
+        functionButton()
+
+    }
+    private fun numberButton() {
+        zeroButton.setOnClickListener {
+            appendToresult("0")
+        }
+        oneButton.setOnClickListener {
+            appendToresult("1")
+        }
+        twoButton.setOnClickListener {
+            appendToresult("2")
+        }
+        threeButton.setOnClickListener {
+            appendToresult("3")
+        }
+        fourButton.setOnClickListener {
+            appendToresult("4")
+        }
+        fiveButton.setOnClickListener {
+            appendToresult("5")
+        }
+        sixButton.setOnClickListener {
+            appendToresult("6")
+        }
+        sevenButton.setOnClickListener {
+            appendToresult("7")
+        }
+        eightButton.setOnClickListener {
+            appendToresult("8")
+        }
+        nineButton.setOnClickListener {
+            appendToresult("9")
+        }
+        decimalButton.setOnClickListener {
+            appendToresult(".")
+        }
+
+    }
+    private fun operationButton () {
+        addButton.setOnClickListener {
+            signView.text= "+"
+            selectOperation('A')
+        }
+        subtractButton.setOnClickListener {
+            signView.text= "-"
+            selectOperation('s')
+        }
+        ProductButton.setOnClickListener {
+            signView.text= "*"
+            selectOperation('M')
+        }
+        DivideButton.setOnClickListener {
+            signView.text= "/"
+            selectOperation('D')
+        }
+
+    }
+    private fun functionButton()
+    {
+        ClearButton.setOnClickListener {
+            clearScreen()
+        }
+        equalButton.setOnClickListener {
+            if (displayRes.text == "") {
+            }
+            else
+            {
+                doMath()
+            }
+        }
+    }
+    private fun appendToresult (s:String) {
+        digit.append(s)
+        displayRes.text = digit.toString()
+    }
+    private fun selectOperation (c:Char) {
+        operation = c
+        lhs = digit.toString().toDouble()
+        digit.clear()
+    }
+    private fun doMath() {
+        rhs = digit.toString().toDouble()
+        digit.clear()
+        when (operation) {
+            'A' -> {
+                val x = MathHelper.add(lhs, rhs)
+                displayRes.text = x.toString()
+                digit.append(x)
+            }
+            'S' -> {
+                val x = MathHelper.sub(lhs, rhs)
+                displayRes.text = x.toString()
+                digit.append(x)
+            }
+            'M' -> {
+                val x = MathHelper.mul(lhs, rhs)
+                displayRes.text = x.toString()
+                digit.append(x)
+            }
+            'D' -> {
+                val x = MathHelper.div(lhs, rhs)
+                displayRes.text = x.toString()
+                digit.append(x)
+            }
+        }
+        signView.text = ""
+    }
+    private fun clearScreen()
+    {
+        try{
+            val l = digit.length
+            digit.delete(0,l)
+            displayRes.text=digit.toString()
+        }
+        catch (e: Exception){
+            appendToresult("")
+
+
+        }
+    }
+}
+class MathHelper {
+    companion object{
+        fun add(lhs:Double, rhs: Double): Double {
+            return lhs + rhs
+        }fun sub(lhs:Double, rhs: Double): Double {
+            return lhs - rhs
+        }
+        fun mul(lhs:Double, rhs: Double): Double {
+            return lhs * rhs
+        }
+        fun div(lhs:Double, rhs: Double): Double {
+            return lhs / rhs
+        }
+
+    }
+}
+
